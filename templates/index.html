@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Know Your Needs - Nutrition Estimator</title>
+
+    <!-- Link to your CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+
+        <!-- App Icon -->
+        <img src="{{ url_for('static', filename='images/icon.png') }}" alt="App Icon" class="app-icon">
+
+        <!-- Banner Image -->
+        <img src="{{ url_for('static', filename='images/banner.jpg') }}" alt="Nutrition Banner" class="banner-image">
+
+        <!-- App Title -->
+        <h1>Know Your Needs</h1>
+        <h3>Nutrition Estimator Based on Height, Weight & Activity</h3>
+
+        <!-- Form -->
+        <form method="POST" action="/">
+            <label for="height">Enter your height (cm):</label>
+            <input type="number" name="height" id="height" min="50" max="250" required>
+
+            <label for="weight">Enter your weight (kg):</label>
+            <input type="number" name="weight" id="weight" min="20" max="400" required>
+
+            <label for="activity">Activity Level:</label>
+            <select name="activity" id="activity" required>
+                <option value="">-- Select Activity Level --</option>
+                <option value="sedentary">Sedentary (little/no exercise)</option>
+                <option value="light">Light (1–3 days/week)</option>
+                <option value="moderate">Moderate (3–5 days/week)</option>
+                <option value="active">Active (6–7 days/week)</option>
+                <option value="athlete">Athlete (intense training)</option>
+            </select>
+
+            <input type="submit" value="Calculate">
+        </form>
+
+        <!-- Display Results -->
+        {% if results %}
+            <div class="results">
+                <h2>Your Nutrition Estimate</h2>
+                <ul>
+                    <li><strong>Ideal Weight:</strong> {{ results.ideal_weight }} kg</li>
+                    <li><strong>BMI:</strong> {{ results.bmi }} ({{ results.bmi_status }})</li>
+                    <li><strong>Protein Requirement:</strong> {{ results.protein }} g/day</li>
+                    <li><strong>Vitamin B12:</strong> {{ results.b12 }} mcg/day</li>
+                    <li><strong>Vitamin D:</strong> {{ results.vitd }} IU/day</li>
+                    <li><strong>Vitamin E:</strong> {{ results.vite }} mg/day</li>
+                    <li><strong>Iron:</strong> {{ results.iron }} mg/day</li>
+                    <li><strong>Zinc:</strong> {{ results.zinc }} mg/day</li>
+                    <li><strong>Calcium:</strong> {{ results.calcium }} mg/day</li>
+                </ul>
+            </div>
+
+            {% if results.advice %}
+                <div class="advice-box">
+                    {{ results.advice }}
+                </div>
+            {% endif %}
+
+            {% if results.suggestion %}
+                <div class="suggestion-box">
+                    {{ results.suggestion }}
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+</body>
+</html>

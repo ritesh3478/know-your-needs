@@ -1,0 +1,30 @@
+# Ignore virtual environment
+venv/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*.pyo
+
+# MacOS system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+desktop.ini
+
+# Log files
+*.log
+
+# IDE/editor folders
+.vscode/
+.idea/
+
+# Environment variable files (if any)
+.env
+
+# Bytecode or compiled files
+*.egg-info/
+*.egg
+*.pyd
+*.so

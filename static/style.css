@@ -1,0 +1,158 @@
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap');
+
+/* Global Styles */
+body {
+    font-family: 'Quicksand', sans-serif;
+    background-color: #eef4fb;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Container Box */
+.container {
+    max-width: 650px;
+    margin: auto;
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Headings */
+h1, h2, h3 {
+    text-align: center;
+    color: #003366;
+    margin-bottom: 15px;
+}
+
+h1 {
+    font-size: 28px;
+}
+
+h3 {
+    color: #005fa3;
+    font-size: 16px;
+}
+
+/* App Icon */
+.app-icon {
+    width: 60px;
+    display: block;
+    margin: 0 auto 10px auto;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+}
+
+/* Banner Image */
+.banner-image {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Layout */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Input & Dropdown */
+input[type="number"],
+select {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccd;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Submit Button */
+input[type="submit"] {
+    background-color: #007acc;
+    color: white;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #005fa3;
+}
+
+/* Labels */
+label {
+    font-weight: 600;
+    color: #333;
+}
+
+/* Special style for activity dropdown label */
+label[for="activity"] {
+    font-weight: bold;
+    color: #005fa3;
+    font-size: 16px;
+}
+
+/* Results Styling */
+.results {
+    background-color: #e7f4ff;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    font-size: 16px;
+    border: 1px solid #c6e2f5;
+}
+
+.results ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.results li {
+    margin-bottom: 6px;
+}
+
+/* Advice box for medical message */
+.advice-box {
+    background-color: #fff3cd;
+    padding: 12px;
+    border-left: 5px solid #ffcc00;
+    border-radius: 6px;
+    font-weight: bold;
+    margin-top: 20px;
+    color: #665c00;
+}
+
+/* Suggestion box for activity/nutrition tips */
+.suggestion-box {
+    background-color: #fff6e0;
+    padding: 12px;
+    border-left: 5px solid #ff9900;
+    border-radius: 6px;
+    margin-top: 15px;
+    font-size: 15px;
+    font-style: italic;
+    color: #663300;
+}
+
+/* Responsive Mobile Design */
+@media (max-width: 600px) {
+    .container {
+        padding: 15px;
+    }
+
+    input,
+    select,
+    input[type="submit"] {
+        font-size: 15px;
+    }
+}
