@@ -2,97 +2,102 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-# Nutrient multipliers per kg (estimated average)
-NUTRIENT_RATIOS = {
-    'protein': {
-        'sedentary': 0.8,
-        'light': 1.0,
-        'moderate': 1.2,
-        'active': 1.5,
-        'athlete': 1.8
-    },
-    'vitamin_b12_mcg': 0.002,
-    'vitamin_d_iu': 10,
-    'vitamin_e_mg': 0.2,
-    'iron_mg': 0.3,
-    'zinc_mg': 0.25,
-    'calcium_mg': 12
-}
+def calculate_bmi(weight, height_cm):
+    height_m = height_cm / 100
+    bmi = round(weight / (height_m ** 2), 1)
+    return bmi
 
 def calculate_ideal_weight(height_cm):
-    return round((height_cm - 100 + (height_cm - 150) / 4), 2)
+    return round(22 * ((height_cm / 100) ** 2), 1)
 
 def get_bmi_status(bmi):
     if bmi < 18.5:
         return "underweight"
-    elif 18.5 <= bmi < 25:
+    elif 18.5 <= bmi < 24.9:
         return "normal"
-    else:
+    elif 25 <= bmi < 29.9:
         return "overweight"
+    else:
+        return "obese"
 
-@app.route("/", methods=["GET", "POST"])
+def protein_requirement(weight, activity):
+    factor = {
+        'sedentary': 0.8,
+        'light': 1.0,
+        'moderate': 1.3,
+        'active': 1.6,
+        'athlete': 1.8
+    }.get(activity, 0.8)
+    return round(weight * factor, 1)
+
+def micronutrient_estimates(weight):
+    return {
+        'Vitamin B12 (mcg)': round(0.0015 * weight, 2),
+        'Vitamin D (IU)': round(7.5 * weight),
+        'Vitamin E (mg)': round(0.15 * weight, 2),
+        'Iron (mg)': round(0.25 * weight, 2),
+        'Zinc (mg)': round(0.2 * weight, 2),
+        'Calcium (mg)': round(9.5 * weight)
+    }
+
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    result = ""
-    if request.method == "POST":
+    result = None
+    if request.method == 'POST':
         try:
-            height = float(request.form["height"])
-            weight = float(request.form["weight"])
-            activity = request.form["activity"]
+            height = float(request.form['height'])
+            weight = float(request.form['weight'])
+            activity = request.form['activity']
 
             if height > 250 or weight > 400:
-                result = "Your height or weight exceeds standard health ranges. Please consult a healthcare provider for personalized guidance."
-                return render_template("index.html", result=result)
+                result = (
+                    f"<strong>⚠️ Height or weight entered is beyond the normal range.</strong><br>"
+                    f"Please consult a healthcare professional for personalized assessment."
+                )
+                return render_template('index.html', result=result)
 
-            height_m = height / 100
-            bmi = round(weight / (height_m ** 2), 2)
+            bmi = calculate_bmi(weight, height)
             bmi_status = get_bmi_status(bmi)
             ideal_weight = calculate_ideal_weight(height)
 
-            if bmi_status == "overweight":
-                base_weight = ideal_weight
-                weight_basis = "(based on ideal weight due to overweight)"
-            else:
-                base_weight = weight
+            # Decide which weight to base protein on
+            if bmi_status in ["normal", "underweight"]:
+                protein_weight = weight
                 weight_basis = "(based on actual weight)"
-            
-            protein_per_kg = NUTRIENT_RATIOS['protein'].get(activity, 0.8)
-            protein = round(protein_per_kg * base_weight, 2)
+            else:
+                protein_weight = ideal_weight
+                weight_basis = "(based on ideal weight due to overweight)"
 
-            vitamins = {
-                'Vitamin B12 (mcg)': round(NUTRIENT_RATIOS['vitamin_b12_mcg'] * base_weight, 2),
-                'Vitamin D (IU)': round(NUTRIENT_RATIOS['vitamin_d_iu'] * base_weight, 2),
-                'Vitamin E (mg)': round(NUTRIENT_RATIOS['vitamin_e_mg'] * base_weight, 2),
-                'Iron (mg)': round(NUTRIENT_RATIOS['iron_mg'] * base_weight, 2),
-                'Zinc (mg)': round(NUTRIENT_RATIOS['zinc_mg'] * base_weight, 2),
-                'Calcium (mg)': round(NUTRIENT_RATIOS['calcium_mg'] * base_weight, 2)
-            }
-
-            activity_advice = ""
-            if activity in ["sedentary", "light"]:
-                activity_advice = (
-                    "🟡 Consider increasing your physical activity for better health. "
-                    "Even 30 minutes a day of light walking can improve wellbeing."
-                )
+            protein = protein_requirement(protein_weight, activity)
+            vitamins = micronutrient_estimates(protein_weight)
 
             result = (
-                f"🔍 Your BMI is {bmi} ({bmi_status}).<br>"
-                f"🎯 Ideal weight: {ideal_weight} kg<br>"
-                f"🍗 Protein needed: {protein} g {weight_basis}<br><br>"
+                f"<strong>🔍 Your BMI:</strong> {bmi} ({bmi_status})<br>"
+                f"<strong>🎯 Ideal Weight:</strong> {ideal_weight} kg<br>"
+                f"<strong>🍗 Protein Required:</strong> {protein} g {weight_basis}<br><br>"
+                f"<strong>🔬 Micronutrients:</strong><br>"
+                f"• Vitamin B12: {vitamins['Vitamin B12 (mcg)']} mcg<br>"
+                f"• Vitamin D: {vitamins['Vitamin D (IU)']} IU<br>"
+                f"• Vitamin E: {vitamins['Vitamin E (mg)']} mg<br>"
+                f"• Iron: {vitamins['Iron (mg)']} mg<br>"
+                f"• Zinc: {vitamins['Zinc (mg)']} mg<br>"
+                f"• Calcium: {vitamins['Calcium (mg)']} mg<br><br>"
             )
 
-            result += "<b>🔬 Suggested Micronutrients:</b><br>"
-            for nutrient, value in vitamins.items():
-                result += f"• {nutrient}: {value}<br>"
+            # Add health suggestion if underweight or overweight
+            if bmi_status == "underweight":
+                result += "⚠️ You are underweight. Consider consulting a doctor or nutritionist.<br>"
+            elif bmi_status in ["overweight", "obese"]:
+                result += "⚠️ You are above normal BMI. Please consult a doctor for a proper plan.<br>"
 
-            if bmi_status != "normal":
-                result += f"<br>⚠️ Your weight is considered {bmi_status}. Please consult a doctor or certified nutritionist for tailored advice.<br>"
+            # Suggest minimum activity for sedentary/light
+            if activity in ['sedentary', 'light']:
+                result += "<br><strong>💡 Suggestion:</strong> Consider at least moderate physical activity (3–5 days/week) for improved metabolic and nutritional health."
 
-            if activity_advice:
-                result += f"<br>{activity_advice}"
-        except Exception as e:
-            result = f"Error: {str(e)}"
+        except ValueError:
+            result = "❌ Please enter valid numerical values."
 
-    return render_template("index.html", result=result)
+    return render_template('index.html', result=result)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
