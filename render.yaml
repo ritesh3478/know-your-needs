@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: know-your-needs
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    plan: free
+    branch: main
+    autoDeploy: true
