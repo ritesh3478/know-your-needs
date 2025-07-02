@@ -1,158 +1,123 @@
-/* Import Google Font */
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap');
-
-/* Global Styles */
+/* General Reset */
 body {
-    font-family: 'Quicksand', sans-serif;
-    background-color: #eef4fb;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f5f8fa;
     margin: 0;
-    padding: 20px;
-}
-
-/* Container Box */
-.container {
-    max-width: 650px;
-    margin: auto;
-    background-color: #ffffff;
-    padding: 25px;
-    border-radius: 14px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-}
-
-/* Headings */
-h1, h2, h3 {
-    text-align: center;
-    color: #003366;
-    margin-bottom: 15px;
-}
-
-h1 {
-    font-size: 28px;
-}
-
-h3 {
-    color: #005fa3;
-    font-size: 16px;
-}
-
-/* App Icon */
-.app-icon {
-    width: 60px;
-    display: block;
-    margin: 0 auto 10px auto;
-    border-radius: 50%;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
-}
-
-/* Banner Image */
-.banner-image {
-    width: 100%;
-    height: auto;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Form Layout */
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-/* Input & Dropdown */
-input[type="number"],
-select {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccd;
-    border-radius: 6px;
-    background-color: #f9f9f9;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-/* Submit Button */
-input[type="submit"] {
-    background-color: #007acc;
-    color: white;
-    padding: 12px;
-    font-size: 16px;
-    font-weight: bold;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-input[type="submit"]:hover {
-    background-color: #005fa3;
-}
-
-/* Labels */
-label {
-    font-weight: 600;
+    padding: 0;
     color: #333;
 }
 
-/* Special style for activity dropdown label */
-label[for="activity"] {
-    font-weight: bold;
-    color: #005fa3;
-    font-size: 16px;
+/* Container Styling */
+.container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
 }
 
-/* Results Styling */
-.results {
-    background-color: #e7f4ff;
-    padding: 15px;
+/* Header with Banner */
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.banner {
+    width: 100%;
+    max-height: 180px;
+    object-fit: cover;
+    border-radius: 12px 12px 0 0;
+}
+h1 {
+    margin: 15px 0 5px;
+    font-size: 28px;
+    color: #2c3e50;
+}
+.subtitle {
+    font-size: 16px;
+    color: #555;
+}
+
+/* Form Styling */
+form {
+    display: flex;
+    flex-direction: column;
+}
+label {
+    margin-top: 12px;
+    font-weight: bold;
+}
+input[type="number"], select {
+    padding: 10px;
+    margin-top: 4px;
+    border: 1px solid #ccc;
     border-radius: 8px;
-    margin-top: 20px;
     font-size: 16px;
-    border: 1px solid #c6e2f5;
+    background-color: #f9f9f9;
+}
+select {
+    background-color: #f0faff;
+    border: 1.5px solid #007BFF;
 }
 
-.results ul {
-    list-style: none;
-    padding-left: 0;
-}
-
-.results li {
-    margin-bottom: 6px;
-}
-
-/* Advice box for medical message */
-.advice-box {
-    background-color: #fff3cd;
+/* Button */
+button {
+    margin-top: 18px;
     padding: 12px;
-    border-left: 5px solid #ffcc00;
-    border-radius: 6px;
-    font-weight: bold;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Result Section */
+.result {
+    background-color: #f0fff4;
+    border-left: 4px solid #38c172;
+    padding: 15px;
     margin-top: 20px;
-    color: #665c00;
+    border-radius: 8px;
+}
+.result h2 {
+    margin-top: 0;
 }
 
-/* Suggestion box for activity/nutrition tips */
-.suggestion-box {
-    background-color: #fff6e0;
-    padding: 12px;
-    border-left: 5px solid #ff9900;
-    border-radius: 6px;
-    margin-top: 15px;
-    font-size: 15px;
-    font-style: italic;
-    color: #663300;
+/* Ad Container */
+.ad-container {
+    margin: 25px 0;
+    text-align: center;
 }
 
-/* Responsive Mobile Design */
-@media (max-width: 600px) {
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 13px;
+    color: #888;
+}
+
+/* Responsive for Mobile */
+@media screen and (max-width: 480px) {
     .container {
         padding: 15px;
+        border-radius: 0;
+        box-shadow: none;
     }
 
-    input,
-    select,
-    input[type="submit"] {
+    h1 {
+        font-size: 24px;
+    }
+
+    button {
+        font-size: 15px;
+    }
+
+    input, select {
         font-size: 15px;
     }
 }
