@@ -48,8 +48,8 @@
         <!-- ✅ Results section -->
         {% if result %}
         <div class="result">
-            <h2>Results:</h2>
-            <p>{{ result }}</p>
+            <h2>Results</h2>
+            {{ result|safe }}
         </div>
         {% endif %}
 
